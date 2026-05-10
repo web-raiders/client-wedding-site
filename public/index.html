@@ -15,5 +15,13 @@
   <body>
     <noscript>You need to enable JavaScript to view this site.</noscript>
     <div id="root"></div>
+
+    <!-- Netlify Forms detector. Static form so Netlify's build bot registers it. -->
+    <form name="rsvp" data-netlify="true" data-netlify-honeypot="bot-field" style="display:none">
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="checkbox" name="plusOne" />
+    </form>
   </body>
 </html>

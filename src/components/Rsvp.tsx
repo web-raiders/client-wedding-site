@@ -116,9 +116,29 @@ const Rsvp = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    // TODO: wire to a real endpoint (Netlify Forms, Formspree, or your API).
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitted(true);
+    const body = new URLSearchParams({
+      'form-name': 'rsvp',
+      'bot-field': '',
+      name,
+      email,
+      plusOne: plusOne ? 'yes' : 'no',
+    }).toString();
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+      if (!res.ok) {
+        throw new Error(`Netlify Forms responded ${res.status}`);
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitting(false);
+      // eslint-disable-next-line no-console
+      console.error('RSVP submit failed', err);
+      alert('Sorry, your RSVP did not send. Please try again or email us.');
+    }
   };
 
   return (
@@ -132,11 +152,24 @@ const Rsvp = () => {
         ) : (
           <>
             <Sub>Kindly let us know by the 1st of November.</Sub>
-            <Form onSubmit={onSubmit}>
+            <Form
+              name='rsvp'
+              method='POST'
+              data-netlify='true'
+              data-netlify-honeypot='bot-field'
+              onSubmit={onSubmit}
+            >
+              <input type='hidden' name='form-name' value='rsvp' />
+              <p hidden>
+                <label>
+                  Don’t fill: <input name='bot-field' />
+                </label>
+              </p>
               <Field>
                 Full name
                 <Input
                   type='text'
+                  name='name'
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -147,6 +180,7 @@ const Rsvp = () => {
                 Email
                 <Input
                   type='email'
+                  name='email'
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -156,6 +190,7 @@ const Rsvp = () => {
               <Check>
                 <input
                   type='checkbox'
+                  name='plusOne'
                   checked={plusOne}
                   onChange={(e) => setPlusOne(e.target.checked)}
                 />
