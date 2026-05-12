@@ -124,16 +124,16 @@ const Invitation = () => {
         </Invite>
         <Events>
           <Event>
-            <EventLabel>Traditional</EventLabel>
-            <EventName>Igba Nkwu</EventName>
-            <EventDate>Friday · 14 November</EventDate>
-            <Venue>The Family Compound, Enugu</Venue>
-          </Event>
-          <Event>
             <EventLabel>White Wedding</EventLabel>
             <EventName>The Ceremony</EventName>
-            <EventDate>Saturday · 15 November</EventDate>
-            <Venue>Garden Hall, Lagos</Venue>
+            <EventDate>Saturday · 14 November 2026</EventDate>
+            <Venue>St. Dominic Catholic Church, 356 Herbert Macaulay Way, Yaba, Lagos</Venue>
+          </Event>
+          <Event>
+            <EventLabel>Reception</EventLabel>
+            <EventName>The Celebration</EventName>
+            <EventDate>Saturday · 14 November 2026</EventDate>
+            <Venue>Paradise Event Center, Yaba, Lagos</Venue>
           </Event>
         </Events>
       </Card>

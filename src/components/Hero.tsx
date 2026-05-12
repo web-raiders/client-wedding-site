@@ -101,7 +101,7 @@ const Hero = () => (
       A love written in quiet moments, golden afternoons, and a thousand small forevers.
     </Tagline>
     <Divider />
-    <Date>Save the Date · Coming this Season</Date>
+    <Date>Saturday · 14 November 2026 · Lagos</Date>
     <Scroll>scroll</Scroll>
   </Wrap>
 );
