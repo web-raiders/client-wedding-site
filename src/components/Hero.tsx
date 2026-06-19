@@ -16,11 +16,60 @@ const Wrap = styled.section`
   background: transparent;
   text-align: center;
   position: relative;
+  overflow: hidden;
+`;
+
+const Media = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 52%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 52%, transparent 92%);
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+  }
+`;
+
+const Scrim = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(
+      ellipse 72% 46% at 50% 50%,
+      rgba(251, 248, 243, 0.62) 0%,
+      rgba(251, 248, 243, 0) 72%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(251, 248, 243, 0.66) 0%,
+      rgba(251, 248, 243, 0.44) 34%,
+      rgba(251, 248, 243, 0.46) 62%,
+      rgba(251, 248, 243, 0.3) 86%,
+      rgba(251, 248, 243, 0) 100%
+    );
+`;
+
+const Content = styled.div`
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-shadow:
+    0 0 4px rgba(251, 248, 243, 0.6),
+    0 1px 26px rgba(251, 248, 243, 0.85);
 `;
 
 const Eyebrow = styled.span`
   font-family: ${({ theme }) => theme.fonts.sans};
   font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.cocoa};
@@ -46,11 +95,24 @@ const Amp = styled.span`
 const Tagline = styled.p`
   font-family: ${({ theme }) => theme.fonts.serif};
   font-style: italic;
-  font-size: clamp(18px, 2.4vw, 26px);
-  color: ${({ theme }) => theme.muted};
-  max-width: 640px;
-  margin-top: 12px;
+  font-size: clamp(17px, 2.2vw, 24px);
+  line-height: 1.95;
+  max-width: 520px;
+  margin-top: 22px;
+  text-align: center;
+  text-wrap: balance;
+  text-shadow: none;
   animation: ${driftIn} 1.8s ease both 0.4s;
+`;
+
+const Ribbon = styled.span`
+  background: ${({ theme }) => theme.cocoa};
+  color: ${({ theme }) => theme.cream};
+  padding: 6px 18px;
+  border-radius: 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  box-shadow: 0 8px 22px ${({ theme }) => theme.shadow};
 `;
 
 const Divider = styled.div`
@@ -66,6 +128,7 @@ const Date = styled.div`
   letter-spacing: 0.35em;
   text-transform: uppercase;
   font-size: 13px;
+  font-weight: 600;
   color: ${({ theme }) => theme.cocoa};
   animation: ${driftIn} 2s ease both 0.6s;
 `;
@@ -93,15 +156,32 @@ const Scroll = styled.div`
 
 const Hero = () => (
   <Wrap>
-    <Eyebrow>Together with their families</Eyebrow>
-    <Names>
-      Ben<Amp>&</Amp>Sandra
-    </Names>
-    <Tagline>
-      A love written in quiet moments, golden afternoons, and a thousand small forevers.
-    </Tagline>
-    <Divider />
-    <Date>Saturday · 14 November 2026 · Lagos</Date>
+    <Media>
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster='/images/hero-poster.jpg'
+      >
+        <source src='/video/hero.mp4' type='video/mp4' />
+        <source src='/video/hero.mov' type='video/quicktime' />
+      </video>
+    </Media>
+    <Scrim />
+    <Content>
+      <Eyebrow>Together with their families</Eyebrow>
+      <Names>
+        Ben<Amp>&</Amp>Sandra
+      </Names>
+      <Tagline>
+        <Ribbon>
+          A love written in quiet moments, golden afternoons, and a thousand small forevers.
+        </Ribbon>
+      </Tagline>
+      <Divider />
+      <Date>Saturday · 14 November 2026 · Lagos</Date>
+    </Content>
     <Scroll>scroll</Scroll>
   </Wrap>
 );

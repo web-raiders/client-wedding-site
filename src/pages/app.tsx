@@ -41,6 +41,7 @@ const App = () => (
     <PhotoBlock
       side='left'
       tilt={-3}
+      photo='/images/first-hello.jpg'
       label='Polaroid · the first hello'
       caption='the first hello'
       quote='I knew it the moment I met you. There was something about you that felt like home.'
@@ -49,6 +50,7 @@ const App = () => (
     <PhotoBlock
       side='right'
       tilt={2.5}
+      photo='/images/sunlit-mornings.jpg'
       label='Polaroid · sunlit mornings'
       caption='sunlit mornings'
       quote='Whatever our souls are made of, his and mine are the same.'
@@ -57,6 +59,7 @@ const App = () => (
     <PhotoBlock
       side='left'
       tilt={-1.5}
+      photo='/images/golden-hour.jpg'
       label='Polaroid · golden hour'
       caption='our golden hour'
       quote='In all the world, there is no heart for me like yours.'
@@ -65,6 +68,7 @@ const App = () => (
     <PhotoBlock
       side='right'
       tilt={3}
+      photo='/images/forever-yes.jpg'
       label='Polaroid · the proposal'
       caption='forever, yes'
       quote='And suddenly all the love songs were about you.'

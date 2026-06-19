@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useReveal } from 'utils';
 
@@ -11,6 +11,7 @@ interface Props {
   side?: Side;
   tilt?: number;
   label?: string;
+  photo?: string;
 }
 
 const sway = keyframes`
@@ -120,9 +121,18 @@ const Photo = styled.div`
   }
 `;
 
+const PhotoImg = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+`;
+
 const PhotoLabel = styled.span`
   position: relative;
-  z-index: 1;
+  z-index: 2;
   background: rgba(255, 255, 255, 0.7);
   padding: 6px 14px;
   border-radius: 2px;
@@ -189,8 +199,11 @@ const PhotoBlock: React.FC<Props> = ({
   side = 'left',
   tilt = -2,
   label = 'Polaroid placeholder',
+  photo,
 }) => {
   const { ref: revealRef, revealed } = useReveal<HTMLDivElement>(0.2);
+  const [imgFailed, setImgFailed] = useState(false);
+  const showPhoto = Boolean(photo) && !imgFailed;
 
   return (
     <Section>
@@ -199,7 +212,16 @@ const PhotoBlock: React.FC<Props> = ({
           <FrameWrap $revealed={revealed} $tilt={tilt}>
             <Frame>
               <Photo>
-                <PhotoLabel>{label}</PhotoLabel>
+                {showPhoto ? (
+                  <PhotoImg
+                    src={photo}
+                    alt={caption}
+                    loading='lazy'
+                    onError={() => setImgFailed(true)}
+                  />
+                ) : (
+                  <PhotoLabel>{label}</PhotoLabel>
+                )}
               </Photo>
               <Caption>{caption}</Caption>
             </Frame>

@@ -145,3 +145,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Original full-size media (kept locally, optimized copies live in public/)
+/source-media/
