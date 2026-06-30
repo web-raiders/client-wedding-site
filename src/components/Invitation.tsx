@@ -14,7 +14,7 @@ const Section = styled.section`
 
 const Card = styled.div<{ $revealed: boolean }>`
   width: 100%;
-  max-width: 760px;
+  max-width: 880px;
   background: ${({ theme }) => theme.white};
   padding: 72px 56px;
   text-align: center;
@@ -71,10 +71,10 @@ const Invite = styled.p`
 
 const Events = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-top: 32px;
-  @media (max-width: 600px) { grid-template-columns: 1fr; }
+  @media (max-width: 680px) { grid-template-columns: 1fr; }
 `;
 
 const Event = styled.div`
@@ -105,6 +105,16 @@ const EventDate = styled.div`
   margin-bottom: 4px;
 `;
 
+const EventTime = styled.div`
+  font-family: ${({ theme }) => theme.fonts.sans};
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.clay};
+  margin-bottom: 8px;
+`;
+
 const Venue = styled.div`
   font-family: ${({ theme }) => theme.fonts.sans};
   font-size: 13px;
@@ -127,12 +137,21 @@ const Invitation = () => {
             <EventLabel>White Wedding</EventLabel>
             <EventName>The Ceremony</EventName>
             <EventDate>Saturday · 14 November 2026</EventDate>
+            <EventTime>1:00 PM</EventTime>
             <Venue>St. Dominic Catholic Church, 356 Herbert Macaulay Way, Yaba, Lagos</Venue>
           </Event>
           <Event>
             <EventLabel>Reception</EventLabel>
             <EventName>The Celebration</EventName>
             <EventDate>Saturday · 14 November 2026</EventDate>
+            <EventTime>3:00 PM</EventTime>
+            <Venue>Paradise Event Center, Yaba, Lagos</Venue>
+          </Event>
+          <Event>
+            <EventLabel>After Party</EventLabel>
+            <EventName>The After Party</EventName>
+            <EventDate>Saturday · 14 November 2026</EventDate>
+            <EventTime>9:00 PM</EventTime>
             <Venue>Paradise Event Center, Yaba, Lagos</Venue>
           </Event>
         </Events>

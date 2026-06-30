@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useReveal } from 'utils';
 
 const SANDRA_WHATSAPP = '2347032189331';
 const SANDRA_WHATSAPP_DISPLAY = '+234 703 218 9331';
@@ -29,142 +30,94 @@ const narrationMessage = encodeURIComponent(
 );
 
 const Section = styled.section`
-  padding: 80px 24px;
+  min-height: 100vh;
+  padding: 120px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   position: relative;
-  text-align: center;
 `;
 
-const Inner = styled.div`
-  max-width: 640px;
-  margin: 0 auto;
+const Card = styled.div<{ $revealed: boolean }>`
+  width: 100%;
+  max-width: 820px;
+  background: ${({ theme }) => theme.white};
+  padding: 72px 56px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 40px 80px ${({ theme }) => theme.shadow};
+  border: 1px solid ${({ theme }) => theme.sand};
+  opacity: ${({ $revealed }) => ($revealed ? 1 : 0)};
+  transform: ${({ $revealed }) => ($revealed ? 'translateY(0)' : 'translateY(40px)')};
+  transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid ${({ theme }) => theme.clay};
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  &:after {
+    inset: 18px;
+    opacity: 0.2;
+  }
+
+  @media (max-width: 600px) {
+    padding: 56px 28px;
+  }
+`;
+
+const Eyebrow = styled.p`
+  font-family: ${({ theme }) => theme.fonts.sans};
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.cocoa};
+  margin-bottom: 18px;
 `;
 
 const Title = styled.h2`
-  font-family: ${({ theme }) => theme.fonts.serif};
-  font-size: clamp(28px, 4vw, 40px);
-  margin-bottom: 12px;
+  font-family: ${({ theme }) => theme.fonts.script};
+  font-size: clamp(44px, 8vw, 84px);
   color: ${({ theme }) => theme.cocoa};
+  line-height: 1;
+  margin-bottom: 16px;
 `;
 
 const Sub = styled.p`
   font-family: ${({ theme }) => theme.fonts.serif};
   font-style: italic;
-  font-size: 18px;
+  font-size: clamp(17px, 2vw, 21px);
   color: ${({ theme }) => theme.muted};
-  margin-bottom: 32px;
-`;
-
-const Button = styled.button`
-  display: inline-block;
-  padding: 16px 40px;
-  background: ${({ theme }) => theme.cocoa};
-  color: ${({ theme }) => theme.cream};
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 13px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px ${({ theme }) => theme.shadow};
-
-  &:hover {
-    background: ${({ theme }) => theme.ink};
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px ${({ theme }) => theme.shadow};
-  }
-`;
-
-const Overlay = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(42, 34, 24, 0.55);
-  backdrop-filter: blur(3px);
-  animation: fade 0.25s ease;
-
-  @keyframes fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-`;
-
-const Card = styled.div`
-  position: relative;
-  width: 100%;
   max-width: 520px;
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
-  background: ${({ theme }) => theme.cream};
-  border: 1px solid ${({ theme }) => theme.sand};
-  border-radius: 4px;
-  padding: 48px 36px 40px;
+  margin: 0 auto 8px;
+`;
+
+const ChooseNote = styled.p`
+  font-family: ${({ theme }) => theme.fonts.sans};
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.clay};
+  margin: 0 auto 44px;
+`;
+
+const Groups = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
   text-align: left;
-  box-shadow: 0 24px 60px rgba(42, 34, 24, 0.3);
-  animation: rise 0.3s ease;
-
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 36px;
   }
 `;
 
-const Close = styled.button`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid ${({ theme }) => theme.sand};
-  border-radius: 50%;
-  color: ${({ theme }) => theme.cocoa};
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.parchment};
-    border-color: ${({ theme }) => theme.clay};
-  }
-`;
-
-const CardTitle = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.serif};
-  font-size: 30px;
-  color: ${({ theme }) => theme.cocoa};
-  margin-bottom: 6px;
-  text-align: center;
-`;
-
-const CardSub = styled.p`
-  font-family: ${({ theme }) => theme.fonts.serif};
-  font-style: italic;
-  font-size: 16px;
-  color: ${({ theme }) => theme.muted};
-  text-align: center;
-  margin-bottom: 28px;
-`;
+const Group = styled.div``;
 
 const GroupLabel = styled.div`
   font-family: ${({ theme }) => theme.fonts.sans};
@@ -172,7 +125,15 @@ const GroupLabel = styled.div`
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.clay};
-  margin: 22px 0 12px;
+  margin-bottom: 4px;
+`;
+
+const GroupHint = styled.div`
+  font-family: ${({ theme }) => theme.fonts.serif};
+  font-style: italic;
+  font-size: 14px;
+  color: ${({ theme }) => theme.muted};
+  margin-bottom: 14px;
 `;
 
 const PriceRow = styled.div`
@@ -180,11 +141,11 @@ const PriceRow = styled.div`
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  padding: 10px 0;
-  border-bottom: 1px dashed ${({ theme }) => theme.sand};
+  padding: 12px 0;
+  border-top: 1px solid ${({ theme }) => theme.sand};
 
   &:last-of-type {
-    border-bottom: none;
+    border-bottom: 1px solid ${({ theme }) => theme.sand};
   }
 `;
 
@@ -195,12 +156,13 @@ const ItemName = styled.span`
 `;
 
 const ItemNote = styled.span`
+  display: block;
   font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  font-size: 10px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.clay};
-  margin-left: 8px;
+  margin-top: 3px;
 `;
 
 const ItemPrice = styled.span`
@@ -212,12 +174,20 @@ const ItemPrice = styled.span`
 `;
 
 const AccountBox = styled.div`
-  margin-top: 30px;
-  padding: 22px;
-  background: ${({ theme }) => theme.white};
+  margin-top: 48px;
+  padding: 26px;
+  background: ${({ theme }) => theme.parchment};
   border: 1px solid ${({ theme }) => theme.sand};
   border-radius: 3px;
-  text-align: center;
+`;
+
+const AccountLabel = styled.div`
+  font-family: ${({ theme }) => theme.fonts.sans};
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.clay};
+  margin-bottom: 14px;
 `;
 
 const AccountNumber = styled.div`
@@ -226,7 +196,7 @@ const AccountNumber = styled.div`
   justify-content: center;
   gap: 12px;
   font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 26px;
+  font-size: clamp(24px, 5vw, 30px);
   letter-spacing: 0.12em;
   font-weight: 600;
   color: ${({ theme }) => theme.ink};
@@ -238,46 +208,42 @@ const CopyButton = styled.button`
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.cocoa};
-  background: transparent;
+  background: ${({ theme }) => theme.white};
   border: 1px solid ${({ theme }) => theme.sand};
   border-radius: 2px;
-  padding: 4px 8px;
+  padding: 5px 9px;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.parchment};
     border-color: ${({ theme }) => theme.clay};
   }
 `;
 
 const AccountMeta = styled.div`
-  margin-top: 8px;
+  margin-top: 10px;
   font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.muted};
 `;
 
 const Instructions = styled.p`
-  margin-top: 22px;
+  margin: 24px auto 0;
+  max-width: 540px;
   font-family: ${({ theme }) => theme.fonts.serif};
   font-style: italic;
   font-size: 16px;
   line-height: 1.6;
   color: ${({ theme }) => theme.ink};
-  text-align: center;
 `;
 
 const WhatsAppLink = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 22px;
-  padding: 14px 26px;
-  width: 100%;
-  justify-content: center;
-  box-sizing: border-box;
+  margin-top: 24px;
+  padding: 15px 34px;
   background: ${({ theme }) => theme.cocoa};
   color: ${({ theme }) => theme.cream};
   font-family: ${({ theme }) => theme.fonts.sans};
@@ -287,9 +253,11 @@ const WhatsAppLink = styled.a`
   text-decoration: none;
   border-radius: 2px;
   transition: all 0.3s ease;
+  box-shadow: 0 8px 20px ${({ theme }) => theme.shadow};
 
   &:hover {
     background: ${({ theme }) => theme.ink};
+    transform: translateY(-2px);
   }
 
   &:before {
@@ -301,22 +269,20 @@ const WhatsAppLink = styled.a`
   }
 `;
 
-const Asoebi = () => {
-  const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+const renderItems = (items: AsoebiItem[], prefix: string) =>
+  items.map((item) => (
+    <PriceRow key={`${prefix}-${item.label}-${item.price}`}>
+      <ItemName>
+        {item.label}
+        {item.note && <ItemNote>{item.note}</ItemNote>}
+      </ItemName>
+      <ItemPrice>{item.price}</ItemPrice>
+    </PriceRow>
+  ));
 
-  useEffect(() => {
-    if (!open) return undefined;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [open]);
+const Asoebi = () => {
+  const { ref, revealed } = useReveal<HTMLDivElement>(0.15);
+  const [copied, setCopied] = useState(false);
 
   const copyAccount = async () => {
     try {
@@ -330,80 +296,52 @@ const Asoebi = () => {
 
   return (
     <Section>
-      <Inner>
-        <Title>Aso-ebi</Title>
-        <Sub>
-          Wear our colours and stand with us. Reserve your fabric below — limited pieces available.
-        </Sub>
-        <Button type='button' onClick={() => setOpen(true)}>
-          Buy Aso-ebi
-        </Button>
-      </Inner>
+      <Card ref={ref as React.RefObject<HTMLDivElement>} $revealed={revealed}>
+        <Eyebrow>Aso-ebi</Eyebrow>
+        <Title>Wear our colours</Title>
+        <Sub>Stand with us in our family colours on the day.</Sub>
+        <ChooseNote>Pick one option · prices are per person, not combined</ChooseNote>
 
-      {open && (
-        <Overlay
-          role='dialog'
-          aria-modal='true'
-          aria-label='Aso-ebi payment details'
-          onClick={() => setOpen(false)}
-        >
-          <Card onClick={(e) => e.stopPropagation()}>
-            <Close type='button' aria-label='Close' onClick={() => setOpen(false)}>
-              ×
-            </Close>
-            <CardTitle>Reserve your Aso-ebi</CardTitle>
-            <CardSub>Choose your pieces, then pay to the account below.</CardSub>
-
+        <Groups>
+          <Group>
             <GroupLabel>Female</GroupLabel>
-            {FEMALE_ITEMS.map((item) => (
-              <PriceRow key={`f-${item.label}-${item.price}`}>
-                <ItemName>
-                  {item.label}
-                  {item.note && <ItemNote>{item.note}</ItemNote>}
-                </ItemName>
-                <ItemPrice>{item.price}</ItemPrice>
-              </PriceRow>
-            ))}
-
+            <GroupHint>Choose one of the below</GroupHint>
+            {renderItems(FEMALE_ITEMS, 'f')}
+          </Group>
+          <Group>
             <GroupLabel>Male</GroupLabel>
-            {MALE_ITEMS.map((item) => (
-              <PriceRow key={`m-${item.label}-${item.price}`}>
-                <ItemName>
-                  {item.label}
-                  {item.note && <ItemNote>{item.note}</ItemNote>}
-                </ItemName>
-                <ItemPrice>{item.price}</ItemPrice>
-              </PriceRow>
-            ))}
+            <GroupHint>Choose one of the below</GroupHint>
+            {renderItems(MALE_ITEMS, 'm')}
+          </Group>
+        </Groups>
 
-            <AccountBox>
-              <AccountNumber>
-                {ACCOUNT.number}
-                <CopyButton type='button' onClick={copyAccount}>
-                  {copied ? 'Copied' : 'Copy'}
-                </CopyButton>
-              </AccountNumber>
-              <AccountMeta>
-                {ACCOUNT.bank} · {ACCOUNT.name}
-              </AccountMeta>
-            </AccountBox>
+        <AccountBox>
+          <AccountLabel>Pay to</AccountLabel>
+          <AccountNumber>
+            {ACCOUNT.number}
+            <CopyButton type='button' onClick={copyAccount}>
+              {copied ? 'Copied' : 'Copy'}
+            </CopyButton>
+          </AccountNumber>
+          <AccountMeta>
+            {ACCOUNT.bank} · {ACCOUNT.name}
+          </AccountMeta>
+        </AccountBox>
 
-            <Instructions>
-              Please pay per item. After paying, send your narration to Sandra on WhatsApp
-              ({SANDRA_WHATSAPP_DISPLAY}) — your narration should state exactly what you paid for so
-              we can confirm your booking.
-            </Instructions>
+        <Instructions>
+          Please pay for each item separately. After paying, send your narration to Sandra on
+          WhatsApp ({SANDRA_WHATSAPP_DISPLAY}) stating exactly what you paid for, so we can confirm
+          your booking.
+        </Instructions>
 
-            <WhatsAppLink
-              href={`https://wa.me/${SANDRA_WHATSAPP}?text=${narrationMessage}`}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              Send narration to Sandra
-            </WhatsAppLink>
-          </Card>
-        </Overlay>
-      )}
+        <WhatsAppLink
+          href={`https://wa.me/${SANDRA_WHATSAPP}?text=${narrationMessage}`}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          Send narration to Sandra
+        </WhatsAppLink>
+      </Card>
     </Section>
   );
 };

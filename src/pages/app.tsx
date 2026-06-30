@@ -74,8 +74,8 @@ const App = () => (
       quote='And suddenly all the love songs were about you.'
     />
     <Invitation />
-    <Rsvp />
     <Asoebi />
+    <Rsvp />
     <Footer />
     </Stage>
   </Container>
