@@ -9,6 +9,7 @@ import {
   Invitation,
   Rsvp,
   Asoebi,
+  Gifts,
   Footer,
 } from 'components';
 
@@ -76,6 +77,7 @@ const App = () => (
     <Invitation />
     <Asoebi />
     <Rsvp />
+    <Gifts />
     <Footer />
     </Stage>
   </Container>
