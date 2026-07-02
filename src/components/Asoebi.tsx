@@ -20,8 +20,8 @@ const FEMALE_ITEMS: AsoebiItem[] = [
 ];
 
 const MALE_ITEMS: AsoebiItem[] = [
-  { label: '5 yards & cap', note: '5-star Cashmere', price: '₦60,000' },
-  { label: '5 yards & cap', price: '₦35,000' },
+  { label: '4 yards & cap', note: '5-star Cashmere', price: '₦60,000' },
+  { label: '4 yards & cap', price: '₦35,000' },
   { label: 'Cap only', price: '₦10,000' },
 ];
 
