@@ -5,7 +5,7 @@ import { useReveal } from 'utils';
 type GiftAccount = { person: string; bank: string; number: string };
 
 const ACCOUNTS: GiftAccount[] = [
-  { person: 'Ben', bank: 'Access Bank', number: '0050255362' },
+  { person: 'Ben', bank: 'Abbey Bank', number: '0006166665' },
   { person: 'Sandra', bank: 'UBA', number: '2079480695' },
 ];
 
