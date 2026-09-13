@@ -62,20 +62,6 @@ const Input = styled.input`
   &:focus { border-color: ${({ theme }) => theme.clay}; }
 `;
 
-const Check = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: ${({ theme }) => theme.fonts.serif};
-  font-style: italic;
-  font-size: 17px;
-  color: ${({ theme }) => theme.ink};
-  padding: 14px 0;
-  cursor: pointer;
-  user-select: none;
-  input { width: 18px; height: 18px; accent-color: ${({ theme }) => theme.cocoa}; }
-`;
-
 const Button = styled.button`
   margin-top: 8px;
   padding: 18px 32px;
@@ -109,7 +95,6 @@ const Thanks = styled.div`
 const Rsvp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [plusOne, setPlusOne] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -121,7 +106,6 @@ const Rsvp = () => {
       'bot-field': '',
       name,
       email,
-      plusOne: plusOne ? 'yes' : 'no',
     }).toString();
     try {
       const res = await fetch('/', {
@@ -187,15 +171,6 @@ const Rsvp = () => {
                   placeholder='you@example.com'
                 />
               </Field>
-              <Check>
-                <input
-                  type='checkbox'
-                  name='plusOne'
-                  checked={plusOne}
-                  onChange={(e) => setPlusOne(e.target.checked)}
-                />
-                I will be bringing a plus one
-              </Check>
               <Button type='submit' disabled={submitting}>
                 {submitting ? 'Sending…' : 'Send RSVP'}
               </Button>
